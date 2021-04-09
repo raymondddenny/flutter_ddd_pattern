@@ -21,6 +21,71 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
   Stream<SignInFormState> mapEventToState(
     SignInFormEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    yield* event.map(
+      emailChanged: (e) async* {
+        yield state.copyWith.call(
+          emailAddress: EmailAddress(e.emailStr),
+          authFailureOrSuccessOption: none(),
+        );
+      },
+      passwordChanged: (e) async* {
+        yield state.copyWith.call(
+          password: Password(e.passwordStr),
+          authFailureOrSuccessOption: none(),
+        );
+      },
+      registerWithEmailAndPasswordPressed: (e) async* {
+        yield* _performActionOnAuthFacadeWithEmailAndPassword(
+          _authFacade.registerWithEmailAndPassword,
+        );
+      },
+      signInWithEmailAndPasswordPressed: (e) async* {
+        yield* _performActionOnAuthFacadeWithEmailAndPassword(
+            _authFacade.signInWithEmailAndPassword);
+      },
+      signInWithGooglePressed: (e) async* {
+        // perform the logic here
+        yield state.copyWith.call(
+          isSubmitting: true,
+          authFailureOrSuccessOption: none(),
+        );
+
+        final failureOrSuccess = await _authFacade.signInWithGoogle();
+
+        yield state.copyWith.call(
+          isSubmitting: false,
+          authFailureOrSuccessOption: some(failureOrSuccess),
+        );
+      },
+    );
+  }
+
+  Stream<SignInFormState> _performActionOnAuthFacadeWithEmailAndPassword(
+      Future<Either<AuthFailure, Unit>> Function({
+    @required EmailAddress emailAddress,
+    @required Password password,
+  })
+          passingCall) async* {
+    final isEmailValid = state.emailAddress.isValid();
+    final isPasswordValid = state.password.isValid();
+    Either<AuthFailure, Unit> failureOrSuccess;
+    if (isEmailValid && isPasswordValid) {
+      yield state.copyWith.call(
+        isSubmitting: true,
+        authFailureOrSuccessOption: none(),
+      );
+
+      failureOrSuccess = await passingCall(
+          emailAddress: state.emailAddress, password: state.password);
+    }
+
+    yield state.copyWith.call(
+      isSubmitting: false,
+      validate: true,
+
+      // authFailureOrSuccessOption: failureOrSuccess == null ?none():some(failureOrSuccess),
+      authFailureOrSuccessOption: optionOf(
+          failureOrSuccess), // this optionOf are run the same logic as above
+    );
   }
 }

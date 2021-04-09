@@ -757,14 +757,14 @@ class _$SignInFormStateTearOff {
   _SignInFormState call(
       {@required EmailAddress emailAddress,
       @required Password password,
+      @required bool validate,
       @required bool isSubmitting,
-      @required bool showErrorMessages,
       @required Option<Either<AuthFailure, Unit>> authFailureOrSuccessOption}) {
     return _SignInFormState(
       emailAddress: emailAddress,
       password: password,
+      validate: validate,
       isSubmitting: isSubmitting,
-      showErrorMessages: showErrorMessages,
       authFailureOrSuccessOption: authFailureOrSuccessOption,
     );
   }
@@ -778,9 +778,8 @@ const $SignInFormState = _$SignInFormStateTearOff();
 mixin _$SignInFormState {
   EmailAddress get emailAddress;
   Password get password;
-  bool get isSubmitting; //to handle when state is submitting something
-  bool
-      get showErrorMessages; // to handle state when to show the error messages during authentication
+  bool get validate;
+  bool get isSubmitting;
   Option<Either<AuthFailure, Unit>> get authFailureOrSuccessOption;
 
   @JsonKey(ignore: true)
@@ -795,8 +794,8 @@ abstract class $SignInFormStateCopyWith<$Res> {
   $Res call(
       {EmailAddress emailAddress,
       Password password,
+      bool validate,
       bool isSubmitting,
-      bool showErrorMessages,
       Option<Either<AuthFailure, Unit>> authFailureOrSuccessOption});
 }
 
@@ -813,8 +812,8 @@ class _$SignInFormStateCopyWithImpl<$Res>
   $Res call({
     Object emailAddress = freezed,
     Object password = freezed,
+    Object validate = freezed,
     Object isSubmitting = freezed,
-    Object showErrorMessages = freezed,
     Object authFailureOrSuccessOption = freezed,
   }) {
     return _then(_value.copyWith(
@@ -822,11 +821,9 @@ class _$SignInFormStateCopyWithImpl<$Res>
           ? _value.emailAddress
           : emailAddress as EmailAddress,
       password: password == freezed ? _value.password : password as Password,
+      validate: validate == freezed ? _value.validate : validate as bool,
       isSubmitting:
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
-      showErrorMessages: showErrorMessages == freezed
-          ? _value.showErrorMessages
-          : showErrorMessages as bool,
       authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
           ? _value.authFailureOrSuccessOption
           : authFailureOrSuccessOption as Option<Either<AuthFailure, Unit>>,
@@ -844,8 +841,8 @@ abstract class _$SignInFormStateCopyWith<$Res>
   $Res call(
       {EmailAddress emailAddress,
       Password password,
+      bool validate,
       bool isSubmitting,
-      bool showErrorMessages,
       Option<Either<AuthFailure, Unit>> authFailureOrSuccessOption});
 }
 
@@ -864,8 +861,8 @@ class __$SignInFormStateCopyWithImpl<$Res>
   $Res call({
     Object emailAddress = freezed,
     Object password = freezed,
+    Object validate = freezed,
     Object isSubmitting = freezed,
-    Object showErrorMessages = freezed,
     Object authFailureOrSuccessOption = freezed,
   }) {
     return _then(_SignInFormState(
@@ -873,11 +870,9 @@ class __$SignInFormStateCopyWithImpl<$Res>
           ? _value.emailAddress
           : emailAddress as EmailAddress,
       password: password == freezed ? _value.password : password as Password,
+      validate: validate == freezed ? _value.validate : validate as bool,
       isSubmitting:
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
-      showErrorMessages: showErrorMessages == freezed
-          ? _value.showErrorMessages
-          : showErrorMessages as bool,
       authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
           ? _value.authFailureOrSuccessOption
           : authFailureOrSuccessOption as Option<Either<AuthFailure, Unit>>,
@@ -890,13 +885,13 @@ class _$_SignInFormState implements _SignInFormState {
   const _$_SignInFormState(
       {@required this.emailAddress,
       @required this.password,
+      @required this.validate,
       @required this.isSubmitting,
-      @required this.showErrorMessages,
       @required this.authFailureOrSuccessOption})
       : assert(emailAddress != null),
         assert(password != null),
+        assert(validate != null),
         assert(isSubmitting != null),
-        assert(showErrorMessages != null),
         assert(authFailureOrSuccessOption != null);
 
   @override
@@ -904,15 +899,15 @@ class _$_SignInFormState implements _SignInFormState {
   @override
   final Password password;
   @override
+  final bool validate;
+  @override
   final bool isSubmitting;
-  @override //to handle when state is submitting something
-  final bool showErrorMessages;
-  @override // to handle state when to show the error messages during authentication
+  @override
   final Option<Either<AuthFailure, Unit>> authFailureOrSuccessOption;
 
   @override
   String toString() {
-    return 'SignInFormState(emailAddress: $emailAddress, password: $password, isSubmitting: $isSubmitting, showErrorMessages: $showErrorMessages, authFailureOrSuccessOption: $authFailureOrSuccessOption)';
+    return 'SignInFormState(emailAddress: $emailAddress, password: $password, validate: $validate, isSubmitting: $isSubmitting, authFailureOrSuccessOption: $authFailureOrSuccessOption)';
   }
 
   @override
@@ -925,12 +920,12 @@ class _$_SignInFormState implements _SignInFormState {
             (identical(other.password, password) ||
                 const DeepCollectionEquality()
                     .equals(other.password, password)) &&
+            (identical(other.validate, validate) ||
+                const DeepCollectionEquality()
+                    .equals(other.validate, validate)) &&
             (identical(other.isSubmitting, isSubmitting) ||
                 const DeepCollectionEquality()
                     .equals(other.isSubmitting, isSubmitting)) &&
-            (identical(other.showErrorMessages, showErrorMessages) ||
-                const DeepCollectionEquality()
-                    .equals(other.showErrorMessages, showErrorMessages)) &&
             (identical(other.authFailureOrSuccessOption,
                     authFailureOrSuccessOption) ||
                 const DeepCollectionEquality().equals(
@@ -943,8 +938,8 @@ class _$_SignInFormState implements _SignInFormState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(emailAddress) ^
       const DeepCollectionEquality().hash(password) ^
+      const DeepCollectionEquality().hash(validate) ^
       const DeepCollectionEquality().hash(isSubmitting) ^
-      const DeepCollectionEquality().hash(showErrorMessages) ^
       const DeepCollectionEquality().hash(authFailureOrSuccessOption);
 
   @JsonKey(ignore: true)
@@ -960,9 +955,9 @@ abstract class _SignInFormState implements SignInFormState {
           @required
               Password password,
           @required
-              bool isSubmitting,
+              bool validate,
           @required
-              bool showErrorMessages,
+              bool isSubmitting,
           @required
               Option<Either<AuthFailure, Unit>> authFailureOrSuccessOption}) =
       _$_SignInFormState;
@@ -972,10 +967,10 @@ abstract class _SignInFormState implements SignInFormState {
   @override
   Password get password;
   @override
+  bool get validate;
+  @override
   bool get isSubmitting;
-  @override //to handle when state is submitting something
-  bool get showErrorMessages;
-  @override // to handle state when to show the error messages during authentication
+  @override
   Option<Either<AuthFailure, Unit>> get authFailureOrSuccessOption;
   @override
   @JsonKey(ignore: true)

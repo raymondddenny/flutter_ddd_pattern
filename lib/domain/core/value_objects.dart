@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
-import 'package:noteapp_ddd_pattern/domain/auth/value_objects.dart';
+import 'package:noteapp_ddd_pattern/domain/core/errors.dart';
 import 'package:noteapp_ddd_pattern/domain/core/failures.dart';
 
 // NOTE: This class store all the abstract class such as equality;
@@ -11,6 +11,12 @@ abstract class ValueObject<T> {
   Either<ValueFailure<T>, T> get value;
 
   bool isValid() => value.isRight();
+
+  /// Throws [UnexpectedValueError] containing the [ValueFailure]
+  T getOrCrash() {
+    //id = identity - same as writing (right) => right
+    return value.fold((f) => throw UnexpectedValueError(f), id);
+  }
 
   @override
   bool operator ==(Object other) {
